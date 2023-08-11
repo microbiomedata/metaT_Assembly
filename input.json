@@ -1,0 +1,9 @@
+{
+  "jgi_metaT_ASM.input_file":["/global/cfs/projectdirs/m3408/ficus/11809.7.220839.TCCTGAG-ACTGCAT.fastq.gz"],
+  "jgi_metaT_ASM.rename_contig_prefix":"503125_160870",
+  "jgi_metaT_ASM.proj":"nmdc:503125_160870",
+  "jgi_metaT_ASM.resource": "NERSC -- perlmutter",
+  "jgi_metaT_ASM.informed_by": "nmdc:xxxxxx",
+  "jgi_metaT_ASM.memory": "105G",
+  "jgi_metaT_ASM.threads": "16"
+}
