@@ -1,4 +1,4 @@
 {
-    "metatranscriptome_assy.input_files":["data/jgi_data/52897_test_interl.fq.gz"]
+    "metatranscriptome_assy.input_files":["test_data/test_interl.fq.gz"]
   }
   
