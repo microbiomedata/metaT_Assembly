@@ -39,7 +39,7 @@ workflow metatranscriptome_assy {
     call mapping.mappingtask as single_run {
            input: reads=input_files[0], reference=create_agp.outcontigs, container=bbtools_container
        }
-    call mapping.finalize_bams{
+    call mapping.finalize_bams as finalize_bams{
         	input: insing=single_run.outbamfile, container=bbtools_container
     	}
 
@@ -50,11 +50,13 @@ workflow metatranscriptome_assy {
 
 
     output {
-        File final_tar_bam = tar_bams.filename_tarbam
+        File final_tar_bam = tar_bams.outtarbam
         File final_contigs = create_agp.outcontigs
         File final_scaffolds = create_agp.outscaffolds
         File final_log = assy.log
 	    File final_readlen = readstats_raw.outreadlen
+        File final_sam = finalize_bams.outsam
+        File final_bam = finalize_bams.outbam
     }
 
         meta {
