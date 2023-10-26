@@ -2,3 +2,7 @@ womtool-85.jar
 .DS_Store
 cromwell-executions/
 cromwell-85.jar
+archive/
+test_data/jgi_data/
+*.log
+sftp.json
