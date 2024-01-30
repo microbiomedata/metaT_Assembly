@@ -1,4 +1,3 @@
 {
-    "metatranscriptome_assy.input_files":["test_data/test_interl.fq.gz"]
+    "metatranscriptome_assy.input_files":["/expanse/projects/nmdc/cromwell/cromwell-executions/metaTReadsQC/edaba920-501d-4add-abff-199153bd41ac/call-finish_rqc/execution/nmdc_xxxxxxx_filtered.fastq.gz"]
   }
-  

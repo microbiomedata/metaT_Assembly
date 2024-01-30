@@ -1,0 +1,5 @@
+{
+    "default_runtime_attributes": {
+      "docker": "bryce911/bbtools:38.86"
+    }
+  }

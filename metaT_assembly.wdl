@@ -1,7 +1,7 @@
 # version 1.0
 
-import "jgi_meta_wdl/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
-import "jgi_meta_wdl/common/mapping.wdl" as mapping
+# import "jgi_meta_wdl/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
+# import "jgi_meta_wdl/common/mapping.wdl" as mapping
 
 # import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl" as http_rnaspades
 #HELPDOC
@@ -19,39 +19,57 @@ import "jgi_meta_wdl/common/mapping.wdl" as mapping
 # it seem to throw warnings for the script in http.
 # A tool called mgiht have to do git submodule first https://git-scm.com/book/en/v2/Git-Tools-Submodules#:~:text=Git%20addresses%20this%20issue%20using,and%20keep%20your%20commits%20separate.
 
+
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/master/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/master/common/mapping.wdl" as mapping
+
 workflow metatranscriptome_assy {
+    input{
         Array[File] input_files
         String bbtools_container = "bryce911/bbtools:38.86"
         String spades_container_prod = "bryce911/spades:3.15.4"
-    
+    }
 
     call http_rnaspades.readstats_raw {
-    	 input: reads_files=input_files, container=bbtools_container
+    	 input: 
+         reads_files = input_files, 
+         container = bbtools_container
     }
 
     call http_rnaspades.assy {
-         input: reads_files=input_files, container=spades_container_prod
+         input: 
+         reads_files = input_files, 
+         container = spades_container_prod
     }
     call http_rnaspades.create_agp {
-         input: contigs_in=assy.out, container=bbtools_container
+         input: 
+         contigs_in = assy.out, 
+         container = bbtools_container
     }
 
     call mapping.mappingtask as single_run {
-           input: reads=input_files[0], reference=create_agp.outcontigs, container=bbtools_container
+           input: 
+           reads = input_files[0], 
+           reference = create_agp.outcontigs, 
+           container = bbtools_container
        }
     call mapping.finalize_bams as finalize_bams{
-        	input: insing=single_run.outbamfile, container=bbtools_container
+        	input: 
+            insing = single_run.outbamfile, 
+            container = bbtools_container
     	}
 
     call mapping.tar_bams as tar_bams {
-    		input: insing=single_run.outbamfile,  container=bbtools_container
+    		input: 
+            insing = single_run.outbamfile,  
+            container = bbtools_container
     	}
 
 
 
     output {
         File final_tar_bam = tar_bams.outtarbam
-        File final_contigs = create_agp.outcontigs
+        File final_contigs = create_agp.outcontigs  # annotation.input_file
         File final_scaffolds = create_agp.outscaffolds
         File final_log = assy.log
 	    File final_readlen = readstats_raw.outreadlen
