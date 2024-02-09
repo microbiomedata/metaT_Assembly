@@ -1,27 +1,7 @@
-# version 1.0
+version 1.0
 
-# import "jgi_meta_wdl/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
-# import "jgi_meta_wdl/common/mapping.wdl" as mapping
-
-# import "https://raw.githubusercontent.com/microsoft/five-dollar-genome-analysis-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl" as http_rnaspades
-#HELPDOC
-# https://cromwell.readthedocs.io/en/stable/Imports/ for import
-
-# example of version 1.0
-# https://github.com/vgteam/vg_wdl/blob/master/workflows/giraffe.wdl
-
-# testing using miniwdl
-# miniwdl run -i input_test2.json jgi_git_assembly.wdl
-
-#TODO
-# there is an issue with the repo not being downloaded from the link also it seems when you do 
-#  `miniwdl check jgi_git_assembly.wdl`
-# it seem to throw warnings for the script in http.
-# A tool called mgiht have to do git submodule first https://git-scm.com/book/en/v2/Git-Tools-Submodules#:~:text=Git%20addresses%20this%20issue%20using,and%20keep%20your%20commits%20separate.
-
-
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/master/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/master/common/mapping.wdl" as mapping
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping.wdl" as mapping
 
 workflow metatranscriptome_assy {
     input{
