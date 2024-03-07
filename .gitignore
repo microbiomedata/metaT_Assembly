@@ -3,6 +3,6 @@ womtool-85.jar
 cromwell-executions/
 cromwell-85.jar
 archive/
-test_data/jgi_data/
+test_data/
 *.log
 sftp.json
