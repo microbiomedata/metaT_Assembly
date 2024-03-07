@@ -3,7 +3,6 @@ version 1.0
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping.wdl" as mapping
 
-
 workflow metatranscriptome_assy {
     input{
         Array[File] input_files
@@ -82,20 +81,27 @@ task rename_contig{
         File legend
         String rename_contig_prefix
         String container
+        String filename_contigs="~{rename_contig_prefix}_contigs.fna"
+        String filename_scaffolds="~{rename_contig_prefix}_scaffolds.fna"
+        String filename_agp="~{rename_contig_prefix}.agp"
+        String filename_legend="~{rename_contig_prefix}_scaffolds.legend"
     }
     command <<<
 
         if [ "~{rename_contig_prefix}" != "scaffold" ]; then
-            sed -i 's/scaffold/~{rename_contig_prefix}_scf/g' ~{contigs} ~{scaffolds} ~{agp} ~{legend}
+            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{contigs} > ~{filename_contigs}
+            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{scaffolds} > ~{filename_scaffolds}
+            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{agp} > ~{filename_agp}
+            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{legend} > ~{filename_legend}
         fi
 
     >>>
 
     output{
-        File outcontigs = contigs
-        File outscaffolds = scaffolds
-        File outagp = agp
-        File outlegend = legend
+        File outcontigs = filename_contigs
+        File outscaffolds = filename_scaffolds
+        File outagp = filename_agp
+        File outlegend = filename_legend
     }
     runtime {
         docker: container
