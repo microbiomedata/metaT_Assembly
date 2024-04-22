@@ -6,10 +6,10 @@ import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping
 workflow metatranscriptome_assy {
     input{
         Array[File] input_files
-        String rename_contig_prefix="scaffold"
+        String proj_id
+        String rename_contig_prefix=sub(proj_id, ":", "_")
         String bbtools_container = "bryce911/bbtools:38.86"
         String spades_container_prod = "bryce911/spades:3.15.4"
-        String prefix = ""
     }
 
     call http_rnaspades.readstats_raw {
@@ -55,24 +55,37 @@ workflow metatranscriptome_assy {
             container = bbtools_container
     }
 
+    call finish_asm {
+        input:
+        prefix = rename_contig_prefix,
+        final_tar_bam = tar_bams.outtarbam,
+        final_contigs = create_agp.outcontigs,
+        final_scaffolds = create_agp.outscaffolds,
+        final_log = assy.log,
+        final_readlen = readstats_raw.outreadlen,
+        final_sam = finalize_bams.outsam,
+        final_bam = finalize_bams.outbam,
+        container = bbtools_container
+    }
+
     call make_info_file {
         input:
         bbtools_info = rename_contig.outlog,
         spades_info = assy.log,
-        prefix = prefix,
+        prefix = rename_contig_prefix,
         bbtools_container = bbtools_container,
         spades_container = spades_container_prod
     }
 
 
     output {
-        File final_tar_bam = tar_bams.outtarbam
-        File final_contigs = create_agp.outcontigs  # annotation.input_file
-        File final_scaffolds = create_agp.outscaffolds
-        File final_log = assy.log
-        File final_readlen = readstats_raw.outreadlen
-        File final_sam = finalize_bams.outsam
-        File final_bam = finalize_bams.outbam
+        File final_tar_bam = finish_asm.final_tar_bam
+        File final_contigs = finish_asm.final_contigs  # annotation.input_file
+        File final_scaffolds = finish_asm.final_scaffolds
+        File final_log = finish_asm.final_log
+        File final_readlen = finish_asm.final_readlen
+        File final_sam = finish_asm.final_sam
+        File final_bam = finish_asm.final_bam
         File info_file = make_info_file.assyinfo
     }
 
@@ -120,6 +133,45 @@ task rename_contig{
         docker: container
     }
 }
+
+task finish_asm {
+    input{
+        String prefix
+        File tar_bam
+        File contigs
+        File scaffolds
+        File log 
+        File readlen 
+        File sam 
+        File bam 
+        String container
+    }
+
+    command <<<
+        set -oeu pipefail
+        ln -s ~{tar_bam} ~{prefix}_bamfiles.tar
+        ln -s ~{contigs} ~{prefix}_contigs.fna
+        ln -s ~{scaffolds} ~{prefix}_scaffolds.fna
+        ln -s ~{log} ~{prefix}_spades.log
+        ln -s ~{readlen} ~{prefix}_readlen.txt
+        ln -s ~{sam} ~{prefix}_pairedMapped.sam.gz
+        ln -s ~{bam} ~{prefix}_pairedMapped_sorted.bam
+    >>>
+
+    output{
+        File final_tar_bam = "~{prefix}_bamfiles.tar"
+        File final_contigs = "~{prefix}_contigs.fna"
+        File final_scaffolds = "~{prefix}_scaffolds.fna"
+        File final_log = "~{prefix}_spades.log"
+        File final_readlen = "~{prefix}_readlen.txt"
+        File final_sam = "~{prefix}_pairedMapped.sam.gz"
+        File final_bam = "~{prefix}_pairedMapped_sorted.bam"
+    }
+    runtime{
+        docker: container
+    }
+}
+
 
 task make_info_file{
     input{
