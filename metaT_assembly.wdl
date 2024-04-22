@@ -58,13 +58,13 @@ workflow metatranscriptome_assy {
     call finish_asm {
         input:
         prefix = rename_contig_prefix,
-        final_tar_bam = tar_bams.outtarbam,
-        final_contigs = create_agp.outcontigs,
-        final_scaffolds = create_agp.outscaffolds,
-        final_log = assy.log,
-        final_readlen = readstats_raw.outreadlen,
-        final_sam = finalize_bams.outsam,
-        final_bam = finalize_bams.outbam,
+        tar_bam = tar_bams.outtarbam,
+        contigs = create_agp.outcontigs,
+        scaffolds = create_agp.outscaffolds,
+        log = assy.log,
+        readlen = readstats_raw.outreadlen,
+        sam = finalize_bams.outsam,
+        bam = finalize_bams.outbam,
         container = bbtools_container
     }
 
