@@ -7,7 +7,7 @@ workflow metatranscriptome_assy {
     input{
         Array[File] input_files
         String proj_id
-        String rename_contig_prefix=sub(proj_id, ":", "_")
+        String prefix=sub(proj_id, ":", "_")
         String bbtools_container = "bryce911/bbtools:38.86"
         String spades_container_prod = "bryce911/spades:3.15.4"
     }
@@ -34,7 +34,8 @@ workflow metatranscriptome_assy {
         scaffolds = create_agp.outscaffolds,
         agp = create_agp.outagp,
         legend = create_agp.outlegend,
-        rename_contig_prefix = rename_contig_prefix,
+        proj_id = proj_id,
+        rename_contig_prefix = prefix,
         container = bbtools_container
     }
     call mapping.mappingtask as single_run {
@@ -57,7 +58,7 @@ workflow metatranscriptome_assy {
 
     call finish_asm {
         input:
-        prefix = rename_contig_prefix,
+        prefix = prefix,
         tar_bam = tar_bams.outtarbam,
         contigs = create_agp.outcontigs,
         scaffolds = create_agp.outscaffolds,
@@ -72,7 +73,7 @@ workflow metatranscriptome_assy {
         input:
         bbtools_info = rename_contig.outlog,
         spades_info = assy.log,
-        prefix = rename_contig_prefix,
+        prefix = prefix,
         bbtools_container = bbtools_container,
         spades_container = spades_container_prod
     }
@@ -102,31 +103,28 @@ task rename_contig{
         File scaffolds
         File agp
         File legend
+        String proj_id
         String rename_contig_prefix
         String container
-        String filename_contigs="~{rename_contig_prefix}_contigs.fna"
-        String filename_scaffolds="~{rename_contig_prefix}_scaffolds.fna"
-        String filename_agp="~{rename_contig_prefix}.agp"
-        String filename_legend="~{rename_contig_prefix}_scaffolds.legend"
     }
     command <<<
         set -oeu pipefail
         grep "Version" /bbmap/README.md | sed 's/#//' 
 
-        if [ "~{rename_contig_prefix}" != "scaffold" ]; then
-            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{contigs} > ~{filename_contigs}
-            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{scaffolds} > ~{filename_scaffolds}
-            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{agp} > ~{filename_agp}
-            sed -e 's/scaffold/~{rename_contig_prefix}_scf/g' ~{legend} > ~{filename_legend}
+        if [ "~{proj_id}" != "scaffold" ]; then
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{contigs} > "~{rename_contig_prefix}_contigs.fna"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{scaffolds} > "~{rename_contig_prefix}_scaffolds.fna"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{agp} > "~{rename_contig_prefix}.agp"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{legend} > "~{rename_contig_prefix}_scaffolds.legend"
         fi
 
     >>>
 
     output{
-        File outcontigs = filename_contigs
-        File outscaffolds = filename_scaffolds
-        File outagp = filename_agp
-        File outlegend = filename_legend
+        File outcontigs = "~{rename_contig_prefix}_contigs.fna"
+        File outscaffolds = "~{rename_contig_prefix}_scaffolds.fna"
+        File outagp = "~{rename_contig_prefix}.agp"
+        File outlegend = "~{rename_contig_prefix}_scaffolds.legend"
         File outlog = stdout()
     }
     runtime {
