@@ -184,24 +184,24 @@ task make_info_file{
     set -oeu pipefail
     bbtools_version=`grep Version ~{bbtools_info}`
 
-    echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}metaT_assy.info
-    echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}metaT_assy.info
-    echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}metaT_assy.info
-    echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}metaT_assy.info
-    echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}metaT_assy.info
-    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}metaT_assy.info
+    echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}_metaT_assy.info
+    echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}_metaT_assy.info
+    echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}_metaT_assy.info
+    echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}_metaT_assy.info
+    echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
+    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
 
-    echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}metaT_assy.info
-    echo -e "   ~{bbtools_container}" >> ~{prefix}metaT_assy.info
-    echo -e "   ~{spades_container}" >> ~{prefix}metaT_assy.info
+    echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
+    echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
+    echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
 
-    echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}metaT_assy.info
-    echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}metaT_assy.info
+    echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
+    echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}_metaT_assy.info
 
     >>>
 
     output{
-        File assyinfo = "~{prefix}metaT_assy.info"
+        File assyinfo = "~{prefix}_metaT_assy.info"
     }
     runtime{
         docker: bbtools_container
