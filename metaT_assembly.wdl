@@ -186,10 +186,10 @@ task make_info_file{
 
     echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}metaT_assy.info
     echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}metaT_assy.info
-    echo -e "The reads are assembled using SPAdes(2):" >> ~{prefix}metaT_assy.info
+    echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}metaT_assy.info
     echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}metaT_assy.info
     echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}metaT_assy.info
-    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(4)${bbtools_version})." >> ~{prefix}metaT_assy.info
+    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}metaT_assy.info
 
     echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}metaT_assy.info
     echo -e "   ~{bbtools_container}" >> ~{prefix}metaT_assy.info
