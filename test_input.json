@@ -1,4 +1,4 @@
 {
   "metatranscriptome_assy.input_files":["test_data/nmdc_xxxxxxx_filtered.fastq.gz"],
-  "metatranscriptome_assy.rename_contig_prefix":"nmdc_xxxxxxx"
+  "metatranscriptome_assy.proj_id":"nmdc:xxxxxxx"
 }

@@ -9,7 +9,7 @@ workflow metatranscriptome_assy {
         String proj_id
         String prefix=sub(proj_id, ":", "_")
         String bbtools_container = "bryce911/bbtools:38.86"
-        String spades_container_prod = "bryce911/spades:3.15.4"
+        String spades_container_prod = "bryce911/spades:3.15.2"
     }
 
     call http_rnaspades.readstats_raw {
@@ -35,7 +35,7 @@ workflow metatranscriptome_assy {
         agp = create_agp.outagp,
         legend = create_agp.outlegend,
         proj_id = proj_id,
-        rename_contig_prefix = prefix,
+        prefix = prefix,
         container = bbtools_container
     }
     call mapping.mappingtask as single_run {
@@ -104,7 +104,7 @@ task rename_contig{
         File agp
         File legend
         String proj_id
-        String rename_contig_prefix
+        String prefix
         String container
     }
     command <<<
@@ -112,19 +112,19 @@ task rename_contig{
         grep "Version" /bbmap/README.md | sed 's/#//' 
 
         if [ "~{proj_id}" != "scaffold" ]; then
-            sed -e 's/scaffold/~{proj_id}_scf/g' ~{contigs} > "~{rename_contig_prefix}_contigs.fna"
-            sed -e 's/scaffold/~{proj_id}_scf/g' ~{scaffolds} > "~{rename_contig_prefix}_scaffolds.fna"
-            sed -e 's/scaffold/~{proj_id}_scf/g' ~{agp} > "~{rename_contig_prefix}.agp"
-            sed -e 's/scaffold/~{proj_id}_scf/g' ~{legend} > "~{rename_contig_prefix}_scaffolds.legend"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{contigs} > "~{prefix}_contigs.fna"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{scaffolds} > "~{prefix}_scaffolds.fna"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{agp} > "~{prefix}.agp"
+            sed -e 's/scaffold/~{proj_id}_scf/g' ~{legend} > "~{prefix}_scaffolds.legend"
         fi
 
     >>>
 
     output{
-        File outcontigs = "~{rename_contig_prefix}_contigs.fna"
-        File outscaffolds = "~{rename_contig_prefix}_scaffolds.fna"
-        File outagp = "~{rename_contig_prefix}.agp"
-        File outlegend = "~{rename_contig_prefix}_scaffolds.legend"
+        File outcontigs = "~{prefix}_contigs.fna"
+        File outscaffolds = "~{prefix}_scaffolds.fna"
+        File outagp = "~{prefix}.agp"
+        File outlegend = "~{prefix}_scaffolds.legend"
         File outlog = stdout()
     }
     runtime {
@@ -147,13 +147,13 @@ task finish_asm {
 
     command <<<
         set -oeu pipefail
-        ln -s ~{tar_bam} ~{prefix}_bamfiles.tar
-        ln -s ~{contigs} ~{prefix}_contigs.fna
-        ln -s ~{scaffolds} ~{prefix}_scaffolds.fna
-        ln -s ~{log} ~{prefix}_spades.log
-        ln -s ~{readlen} ~{prefix}_readlen.txt
-        ln -s ~{sam} ~{prefix}_pairedMapped.sam.gz
-        ln -s ~{bam} ~{prefix}_pairedMapped_sorted.bam
+        ln ~{tar_bam} ~{prefix}_bamfiles.tar || ln -s ~{tar_bam} ~{prefix}_bamfiles.tar
+        ln ~{contigs} ~{prefix}_contigs.fna || ln -s ~{contigs} ~{prefix}_contigs.fna
+        ln ~{scaffolds} ~{prefix}_scaffolds.fna || ln -s ~{scaffolds} ~{prefix}_scaffolds.fna
+        ln ~{log} ~{prefix}_spades.log || ln -s ~{log} ~{prefix}_spades.log
+        ln ~{readlen} ~{prefix}_readlen.txt || ln -s ~{readlen} ~{prefix}_readlen.txt
+        ln ~{sam} ~{prefix}_pairedMapped.sam.gz || ln -s ~{sam} ~{prefix}_pairedMapped.sam.gz
+        ln ~{bam} ~{prefix}_pairedMapped_sorted.bam || ln -s ~{bam} ~{prefix}_pairedMapped_sorted.bam
     >>>
 
     output{
