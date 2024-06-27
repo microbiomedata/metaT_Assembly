@@ -1,4 +1,0 @@
-{
-  "metatranscriptome_assy.input_files":["test_data/nmdc_xxxxxxx_filtered.fastq.gz"],
-  "metatranscriptome_assy.proj_id":"nmdc:xxxxxxx"
-}

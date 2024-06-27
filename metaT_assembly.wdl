@@ -60,8 +60,8 @@ workflow metatranscriptome_assy {
         input:
         prefix = prefix,
         tar_bam = tar_bams.outtarbam,
-        contigs = create_agp.outcontigs,
-        scaffolds = create_agp.outscaffolds,
+        contigs = rename_contig.outcontigs,
+        scaffolds = rename_contig.outscaffolds,
         log = assy.log,
         readlen = readstats_raw.outreadlen,
         sam = finalize_bams.outsam,
