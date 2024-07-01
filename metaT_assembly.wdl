@@ -128,6 +128,9 @@ task rename_contig{
         File outlog = stdout()
     }
     runtime {
+        memory: "10G"
+        cpu:  4
+        maxRetries: 1
         docker: container
     }
 }
@@ -166,6 +169,9 @@ task finish_asm {
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
     }
     runtime{
+        memory: "10G"
+        cpu:  4
+        maxRetries: 1
         docker: container
     }
 }
@@ -204,6 +210,9 @@ task make_info_file{
         File assyinfo = "~{prefix}_metaT_assy.info"
     }
     runtime{
+        memory: "2G"
+        cpu:  4
+        maxRetries: 1
         docker: bbtools_container
     }
 }
