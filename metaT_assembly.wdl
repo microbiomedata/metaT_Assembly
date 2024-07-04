@@ -1,15 +1,16 @@
 version 1.0
 
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping.wdl" as mapping
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping.wdl?ref=85b9153ebb0804bec25ca692d0dfa7ccf3b5338c" as mapping
 
 workflow metatranscriptome_assy {
     input{
         Array[File] input_files
         String proj_id
         String prefix=sub(proj_id, ":", "_")
-        String bbtools_container = "bryce911/bbtools:38.86"
+        String bbtools_container = "microbiomedata/bbtools:38.96"
         String spades_container_prod = "bryce911/spades:3.15.2"
+        String worflowmeta_container="microbiomedata/workflowmeta:1.1.1"
     }
 
     call http_rnaspades.readstats_raw {
@@ -66,7 +67,8 @@ workflow metatranscriptome_assy {
         readlen = readstats_raw.outreadlen,
         sam = finalize_bams.outsam,
         bam = finalize_bams.outbam,
-        container = bbtools_container
+        asmstats = rename_contig.asmstats,
+        container = worflowmeta_container
     }
 
     call make_info_file {
@@ -87,7 +89,9 @@ workflow metatranscriptome_assy {
         File final_readlen = finish_asm.final_readlen
         File final_sam = finish_asm.final_sam
         File final_bam = finish_asm.final_bam
+        File asmstats = finish_asm.final_asmstats
         File info_file = make_info_file.assyinfo
+        
     }
 
         meta {
@@ -118,6 +122,7 @@ task rename_contig{
             sed -e 's/scaffold/~{proj_id}_scf/g' ~{legend} > "~{prefix}_scaffolds.legend"
         fi
 
+        bbstats.sh format=8 in=~{scaffolds} out=stats.json
     >>>
 
     output{
@@ -125,6 +130,7 @@ task rename_contig{
         File outscaffolds = "~{prefix}_scaffolds.fna"
         File outagp = "~{prefix}.agp"
         File outlegend = "~{prefix}_scaffolds.legend"
+        File asmstats = "stats.json"
         File outlog = stdout()
     }
     runtime {
@@ -145,6 +151,7 @@ task finish_asm {
         File readlen 
         File sam 
         File bam 
+        File asmstats
         String container
     }
 
@@ -157,6 +164,10 @@ task finish_asm {
         ln ~{readlen} ~{prefix}_readlen.txt || ln -s ~{readlen} ~{prefix}_readlen.txt
         ln ~{sam} ~{prefix}_pairedMapped.sam.gz || ln -s ~{sam} ~{prefix}_pairedMapped.sam.gz
         ln ~{bam} ~{prefix}_pairedMapped_sorted.bam || ln -s ~{bam} ~{prefix}_pairedMapped_sorted.bam
+
+        sed -i 's/l_gt50k/l_gt50K/g' ~{asmstats}
+        cat ~{asmstats} | jq 'del(.filename)' > scaffold_stats.json
+
     >>>
 
     output{
@@ -167,6 +178,8 @@ task finish_asm {
         File final_readlen = "~{prefix}_readlen.txt"
         File final_sam = "~{prefix}_pairedMapped.sam.gz"
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
+        File final_asmstats = "scaffold_stats.json"
+        
     }
     runtime{
         memory: "10G"
