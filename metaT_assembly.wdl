@@ -1,7 +1,10 @@
 version 1.0
 
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/raw/main1.0/common/mapping.wdl?ref=85b9153ebb0804bec25ca692d0dfa7ccf3b5338c" as mapping
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
+
+# import "./mapping.wdl" as mapping
+# import "./metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
 
 workflow metatranscriptome_assy {
     input{
@@ -10,7 +13,7 @@ workflow metatranscriptome_assy {
         String prefix=sub(proj_id, ":", "_")
         String bbtools_container = "microbiomedata/bbtools:38.96"
         String spades_container_prod = "bryce911/spades:3.15.2"
-        String worflowmeta_container="microbiomedata/workflowmeta:1.1.1"
+        String workflowmeta_container="microbiomedata/workflowmeta:1.1.1"
     }
 
     call http_rnaspades.readstats_raw {
@@ -68,7 +71,7 @@ workflow metatranscriptome_assy {
         sam = finalize_bams.outsam,
         bam = finalize_bams.outbam,
         asmstats = rename_contig.asmstats,
-        container = worflowmeta_container
+        container = workflowmeta_container
     }
 
     call make_info_file {
