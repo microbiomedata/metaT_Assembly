@@ -1,10 +1,10 @@
 version 1.0
 
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as http_rnaspades
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
+# import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as http_rnaspades
+# import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
 
-import "./mapping.wdl" as mapping
-import "./metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/runtime_vars/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref_type=heads" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/runtime_vars/common/mapping.wdl?ref_type=heads" as mapping
 
 workflow metatranscriptome_assy {
     input{
