@@ -3,8 +3,8 @@ version 1.0
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as http_rnaspades
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
 
-# import "./mapping.wdl" as mapping
-# import "./metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
+import "./mapping.wdl" as mapping
+import "./metatranscriptome_assy_rnaspades.wdl" as http_rnaspades
 
 workflow metatranscriptome_assy {
     input{
@@ -14,6 +14,8 @@ workflow metatranscriptome_assy {
         String bbtools_container = "microbiomedata/bbtools:38.96"
         String spades_container_prod = "bryce911/spades:3.15.2"
         String workflowmeta_container="microbiomedata/workflowmeta:1.1.1"
+        Int assy_thr = 8 # half of defaults
+        Int assy_mem = 120 # half of defaults
     }
 
     call http_rnaspades.readstats_raw {
@@ -25,7 +27,9 @@ workflow metatranscriptome_assy {
     call http_rnaspades.assy {
         input:
         reads_files = input_files,
-        container = spades_container_prod
+        container = spades_container_prod,
+        threads = assy_thr,
+        memory = assy_mem
     }
     call http_rnaspades.create_agp {
         input:
