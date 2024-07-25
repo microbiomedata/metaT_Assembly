@@ -191,7 +191,7 @@ task finish_asm {
         File final_sam = "~{prefix}_pairedMapped.sam.gz"
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
         File final_bamidx = "~{prefix}_pairedMapped_sorted.bam.bai"
-        File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov "
+        File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov"
         File final_asmstats = "scaffold_stats.json"
         
     }
