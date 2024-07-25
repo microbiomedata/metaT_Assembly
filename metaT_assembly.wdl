@@ -71,6 +71,8 @@ workflow metatranscriptome_assy {
         readlen = readstats_raw.outreadlen,
         sam = finalize_bams.outsam,
         bam = finalize_bams.outbam,
+        bamidx = finalize_bams.outbamidx,
+        cov = finalize_bams.outcov,
         asmstats = rename_contig.asmstats,
         container = workflowmeta_container
     }
@@ -93,6 +95,8 @@ workflow metatranscriptome_assy {
         File final_readlen = finish_asm.final_readlen
         File final_sam = finish_asm.final_sam
         File final_bam = finish_asm.final_bam
+        File final_bamidx = finish_asm.final_bamidx
+        File final_cov = finish_asm.final_cov
         File asmstats = finish_asm.final_asmstats
         File info_file = make_info_file.assyinfo
         
@@ -155,6 +159,8 @@ task finish_asm {
         File readlen 
         File sam 
         File bam 
+        File bamidx
+        File cov
         File asmstats
         String container
     }
@@ -168,6 +174,8 @@ task finish_asm {
         ln ~{readlen} ~{prefix}_readlen.txt || ln -s ~{readlen} ~{prefix}_readlen.txt
         ln ~{sam} ~{prefix}_pairedMapped.sam.gz || ln -s ~{sam} ~{prefix}_pairedMapped.sam.gz
         ln ~{bam} ~{prefix}_pairedMapped_sorted.bam || ln -s ~{bam} ~{prefix}_pairedMapped_sorted.bam
+        ln ~{bamidx} ~{prefix}_pairedMapped_sorted.bam.bai|| ln -s ~{bamidx} ~{prefix}_pairedMapped_sorted.bam.bai
+        ln ~{cov} ~{prefix}_pairedMapped_sorted.bam.cov || ln -s ~{cov} ~{prefix}_pairedMapped_sorted.bam.cov
 
         sed -i 's/l_gt50k/l_gt50K/g' ~{asmstats}
         cat ~{asmstats} | jq 'del(.filename)' > scaffold_stats.json
@@ -182,6 +190,8 @@ task finish_asm {
         File final_readlen = "~{prefix}_readlen.txt"
         File final_sam = "~{prefix}_pairedMapped.sam.gz"
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
+        File final_bamidx = "~{prefix}_pairedMapped_sorted.bam.bai"
+        File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov "
         File final_asmstats = "scaffold_stats.json"
         
     }
@@ -197,7 +207,7 @@ task finish_asm {
 task make_info_file{
     input{
     File bbtools_info
-    String spades_info
+    File spades_info
     String prefix
     String bbtools_container
     String spades_container
