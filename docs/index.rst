@@ -63,7 +63,7 @@ An example input JSON file is shown below:
 .. code-block:: JSON
 
     {
-      "metatranscriptome_assy.input_files":["/expanse/projects/nmdc/edge_app/test/kli/metaT_Assembly/test_data/nmdc_xxxxxxx_filtered.fastq.gz"],
+      "metatranscriptome_assy.input_files":["https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/readsqc_output/SRR11678315-int-0.1_filtered.fastq.gz"],
       "metatranscriptome_assy.proj_id":"SRR11678315-int-0.1"
     }
 
