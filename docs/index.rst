@@ -1,7 +1,7 @@
 MetaT Assembly Workflow (v0.0.2)
 =============================
 
-.. image:: mt_assy_workflow2024.png
+.. image:: mt_assy_workflow2024.svg
    :align: center
    :scale: 50%
 
@@ -79,31 +79,31 @@ An example output JSON file (scaffold_stats.json) is shown below:
 .. code-block:: JSON 
     
     {
-      "scaffolds": 240209,
-      "contigs": 240566,
-      "scaf_bp": 75371840,
-      "contig_bp": 75367910,
-      "gap_pct": 0.00521,
-      "scaf_N50": 86540,
-      "scaf_L50": 294,
-      "ctg_N50": 87194,
-      "ctg_L50": 293,
-      "scaf_N90": 205805,
-      "scaf_L90": 227,
-      "ctg_N90": 205578,
-      "ctg_L90": 227,
-      "scaf_logsum": 30754,
-      "scaf_powsum": 3220.307,
-      "ctg_logsum": 30715,
-      "ctg_powsum": 3216.241,
-      "asm_score": 2.568,
-      "scaf_max": 4382,
-      "ctg_max": 4382,
+      "scaffolds": 14898,
+      "contigs": 15859,
+      "scaf_bp": 10317572,
+      "contig_bp": 10306758,
+      "gap_pct": 0.10481,
+      "scaf_N50": 4866,
+      "scaf_L50": 666,
+      "ctg_N50": 5176,
+      "ctg_L50": 624,
+      "scaf_N90": 12457,
+      "scaf_L90": 469,
+      "ctg_N90": 13050,
+      "ctg_L90": 447,
+      "scaf_logsum": 28953,
+      "scaf_powsum": 3102.514,
+      "ctg_logsum": 26247,
+      "ctg_powsum": 2824.029,
+      "asm_score": 3.792,
+      "scaf_max": 8898,
+      "ctg_max": 8898,
       "scaf_n_gt50K": 0,
       "scaf_l_gt50K": 0,
       "scaf_pct_gt50K": 0,
-      "gc_avg": 0.59142,
-      "gc_std": 0.08812
+      "gc_avg": 0.51169,
+      "gc_std": 0.10466
     }
 
 

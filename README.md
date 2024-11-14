@@ -29,8 +29,8 @@ The inputs for this workflow are as follows:
 
 ```
 {
-  "metatranscriptome_assy.input_files":["./test_data/nmdc_xxxxxxx_filtered.fastq.gz"],
-  "metatranscriptome_assy.proj_id":"nmdc:xxxxxxx"
+  "metatranscriptome_assy.input_files":["https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/readsqc_output/SRR11678315-int-0.1_filtered.fastq.gz"],
+  "metatranscriptome_assy.proj_id":"nmdc_xxxxxxx"
 }
 ```
 

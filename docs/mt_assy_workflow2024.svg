@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255.47 236.12">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 12px;
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        fill: #e78424;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2, .cls-3, .cls-6, .cls-7 {
+        stroke-width: 2px;
+      }
+
+      .cls-2, .cls-6 {
+        stroke: #000001;
+      }
+
+      .cls-3 {
+        fill: #442d7c;
+        stroke: #452d7c;
+      }
+
+      .cls-3, .cls-6 {
+        fill-rule: evenodd;
+      }
+
+      .cls-8 {
+        font-size: 13px;
+        letter-spacing: 0em;
+      }
+
+      .cls-8, .cls-9, .cls-10, .cls-11 {
+        font-family: ArialMT, Arial;
+      }
+
+      .cls-8, .cls-10, .cls-11 {
+        fill: #f1f2f2;
+      }
+
+      .cls-12 {
+        font-size: 11px;
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        stroke-width: 3px;
+      }
+
+      .cls-4, .cls-5 {
+        fill: #524fa1;
+        stroke: #524fa1;
+      }
+
+      .cls-5 {
+        stroke-width: 4px;
+      }
+
+      .cls-9 {
+        fill: #000001;
+        letter-spacing: 0em;
+      }
+
+      .cls-9, .cls-11 {
+        font-size: 15px;
+      }
+
+      .cls-13 {
+        fill: none;
+        stroke: #323232;
+        stroke-linejoin: round;
+        stroke-width: 4.5px;
+      }
+
+      .cls-6 {
+        fill: #ec4924;
+      }
+
+      .cls-7 {
+        fill: #00addc;
+        stroke: #00addc;
+      }
+
+      .cls-14 {
+        fill: #82d4f1;
+      }
+
+      .cls-11 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-14" x="1.03" y="2.24" width="252" height="230.4" rx="18" ry="18"/>
+  <g>
+    <text class="cls-9" transform="translate(28.41 150.5)"><tspan x="0" y="0">Paired</tspan><tspan x="-11.62" y="18">non-rRNA</tspan><tspan x="-.02" y="36">Reads</tspan></text>
+    <text class="cls-9" transform="translate(163.53 33.82)"><tspan x="0" y="0">Transcripts</tspan></text>
+    <text class="cls-9" transform="translate(173.57 191.06)"><tspan x="0" y="0">Mapped</tspan><tspan x="5.4" y="18">Reads</tspan></text>
+    <g>
+      <circle class="cls-2" cx="51.33" cy="108.46" r="28.8"/>
+      <g>
+        <line class="cls-13" x1="37.95" y1="94.66" x2="57.91" y2="94.66"/>
+        <line class="cls-13" x1="30.35" y1="104.26" x2="50.31" y2="104.26"/>
+        <line class="cls-13" x1="30.35" y1="117.06" x2="50.31" y2="117.06"/>
+        <line class="cls-13" x1="50.35" y1="109.86" x2="70.31" y2="109.86"/>
+        <line class="cls-13" x1="48.35" y1="122.26" x2="68.31" y2="122.26"/>
+        <line class="cls-13" x1="52.35" y1="101.06" x2="72.31" y2="101.06"/>
+      </g>
+    </g>
+    <g>
+      <path class="cls-3" d="M93.89,48.57c0-5.26,4.3-9.52,9.6-9.52h38.4c5.3,0,9.6,4.26,9.6,9.52v38.57c0,5.26-4.3,9.52-9.6,9.52h-38.4c-5.3,0-9.6-4.26-9.6-9.52v-38.57Z"/>
+      <text class="cls-10" transform="translate(101.41 57.41)"><tspan class="cls-1"><tspan x="0" y="0">de novo</tspan></tspan><tspan class="cls-1"><tspan x="-3.98" y="14.4">assembly</tspan></tspan><tspan class="cls-12"><tspan x="-7.35" y="27.6">(MEGAHIT)</tspan></tspan></text>
+    </g>
+    <path class="cls-6" d="M167.78,68.19l-12.16,5.44c-.25.11-.52-.07-.52-.34v-10.88c0-.27.28-.45.52-.34l12.16,5.44c.29.13.29.55,0,.68Z"/>
+    <g>
+      <circle class="cls-2" cx="200.4" cy="67.85" r="28.8"/>
+      <g>
+        <line class="cls-5" x1="177.27" y1="57.66" x2="224.62" y2="57.66"/>
+        <line class="cls-5" x1="176.17" y1="67.85" x2="200.95" y2="67.85"/>
+        <line class="cls-5" x1="187.18" y1="78.05" x2="217.14" y2="78.05"/>
+      </g>
+    </g>
+    <g>
+      <path class="cls-3" d="M94.05,129.75c0-5.26,4.3-9.52,9.6-9.52h38.4c5.3,0,9.6,4.26,9.6,9.52v38.57c0,5.26-4.3,9.52-9.6,9.52h-38.4c-5.3,0-9.6-4.26-9.6-9.52v-38.57Z"/>
+      <text class="cls-11" transform="translate(98.32 153.03)"><tspan x="0" y="0">BBmap</tspan></text>
+    </g>
+    <path class="cls-6" d="M167.94,149.37l-12.16,5.44c-.25.11-.52-.07-.52-.34v-10.88c0-.27.28-.45.52-.34l12.16,5.44c.29.13.29.55,0,.68Z"/>
+    <g>
+      <circle class="cls-2" cx="200.56" cy="149.03" r="28.8"/>
+      <line class="cls-7" x1="205.89" y1="136.74" x2="220.3" y2="136.74"/>
+      <line class="cls-7" x1="208.78" y1="140.34" x2="220.22" y2="140.34"/>
+      <g>
+        <line class="cls-7" x1="181.61" y1="136.74" x2="196.38" y2="136.74"/>
+        <line class="cls-7" x1="186.46" y1="140.41" x2="201.24" y2="140.41"/>
+        <line class="cls-7" x1="183.37" y1="144.08" x2="195.17" y2="144.08"/>
+        <line class="cls-7" x1="188.74" y1="147.76" x2="203.51" y2="147.76"/>
+      </g>
+      <line class="cls-7" x1="194.25" y1="162.48" x2="214.4" y2="162.48"/>
+      <line class="cls-7" x1="194.88" y1="166.08" x2="207.93" y2="166.08"/>
+      <line class="cls-7" x1="195.63" y1="169.68" x2="204.71" y2="169.68"/>
+      <line class="cls-4" x1="180.57" y1="133.14" x2="220.55" y2="133.14"/>
+      <line class="cls-4" x1="187.77" y1="158.88" x2="214.81" y2="158.88"/>
+    </g>
+    <path class="cls-6" d="M90.22,85.7l-7.81,10.79c-.16.22-.49.2-.62-.03l-5.44-9.42c-.14-.23.02-.53.28-.56l13.25-1.37c.32-.03.53.33.34.59Z"/>
+    <path class="cls-6" d="M90.38,131.18l-7.81-10.79c-.16-.22-.49-.2-.62.03l-5.44,9.42c-.14.23.02.53.28.56l13.25,1.37c.32.03.53-.33.34-.59Z"/>
+    <g>
+      <path class="cls-3" d="M93.89,48.57c0-5.26,4.3-9.52,9.6-9.52h38.4c5.3,0,9.6,4.26,9.6,9.52v38.57c0,5.26-4.3,9.52-9.6,9.52h-38.4c-5.3,0-9.6-4.26-9.6-9.52v-38.57Z"/>
+      <text class="cls-8" transform="translate(99.64 57.41)"><tspan x="0" y="0">de novo</tspan><tspan x="-4.31" y="15.6">assembly</tspan><tspan x="-4.67" y="31.2">(SPAdes)</tspan></text>
+    </g>
+    <g>
+      <path class="cls-3" d="M94.05,129.75c0-5.26,4.3-9.52,9.6-9.52h38.4c5.3,0,9.6,4.26,9.6,9.52v38.57c0,5.26-4.3,9.52-9.6,9.52h-38.4c-5.3,0-9.6-4.26-9.6-9.52v-38.57Z"/>
+      <text class="cls-11" transform="translate(99.98 153.03)"><tspan x="0" y="0">bbmap</tspan></text>
+    </g>
+    <path class="cls-6" d="M90.22,85.7l-7.81,10.79c-.16.22-.49.2-.62-.03l-5.44-9.42c-.14-.23.02-.53.28-.56l13.25-1.37c.32-.03.53.33.34.59Z"/>
+    <path class="cls-6" d="M90.38,131.18l-7.81-10.79c-.16-.22-.49-.2-.62.03l-5.44,9.42c-.14.23.02.53.28.56l13.25,1.37c.32.03.53-.33.34-.59Z"/>
+  </g>
+</svg>
