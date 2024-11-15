@@ -25,10 +25,10 @@ Docker images are available in DockerHub:
 Requirements for Execution 
 --------------------------
 
-(recommendations are in **bold**) 
+(recommendations are in *italics*) 
 
-- WDL-capable Workflow Execution Tool (**Cromwell**)
-- Container Runtime that can load Docker images (**Docker v2.1.0.3 or higher**) 
+- WDL-capable Workflow Execution Tool (*Cromwell*)
+- Container Runtime that can load Docker images (*Docker v2.1.0.3 or higher*) 
 
 Hardware Requirements
 ---------------------
@@ -116,27 +116,39 @@ An example output JSON file (scaffold_stats.json) is shown below:
 
 Below is an example of all the output directory files with descriptions to the right.
 
-==================================== ============================================================================
-FileName                              Description
-==================================== ============================================================================
-prefix_contigs.fna                    assembled FASTA contigs
-prefix_scaffolds.fna                  assembled FASTA scaffolds
-prefix_pairedMapped.bam               reads mapping back to the final assembly bam file
-prefix_pairedMapped.sam.gz            reads mapping back to the final assembly sam.gz file
-prefix_pairedMapped_sorted.bam.bai    reads mapping back to the final assembly sorted bam index file
-prefix_pairedMapped_sorted.bam.cov    reads mapping back to the final assembly sorted bam coverage file 
-prefix_bamfiles.tar                   collection of bam files 
-prefix_scaffold_stats.json            scaffold coverage information 
-prefix_readlen.txt                    read length information 
-prefix_assy.info                      assembly workflow information
-prefix_spades.log                     SPAdes workflow log 
-==================================== ============================================================================
+.. list-table:: 
+   :header-rows: 1
+
+   * - Directory/File Name
+     - Description
+   * - prefix_contigs.fna
+     - assembled FASTA contigs
+   * - prefix_scaffolds.fna
+     - assembled FASTA scaffolds
+   * - prefix_pairedMapped.bam
+     - reads mapping back to the final assembly bam file
+   * - prefix_pairedMapped.sam.gz
+     - reads mapping back to the final assembly sam.gz file
+   * - prefix_pairedMapped_sorted.bam.bai
+     - reads mapping back to the final assembly sorted bam index file
+   * - prefix_pairedMapped_sorted.bam.cov
+     - reads mapping back to the final assembly sorted bam coverage file
+   * - prefix_bamfiles.tar
+     - collection of bam files
+   * - prefix_scaffold_stats.json
+     - scaffold coverage information
+   * - prefix_readlen.txt
+     - read length information
+   * - prefix_assy.info
+     - assembly workflow information
+   * - prefix_spades.log
+     - SPAdes workflow log
 
 
 Version History
 ---------------
 
-- 0.0.2 (release date **07/25/2024**)
+- 0.0.2 (release date *07/25/2024*)
 
 
 Point of contact
