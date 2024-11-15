@@ -46,6 +46,12 @@ Third party software (This is included in the Docker image.)
 - `SPAdes v3.15.4 <https://github.com/ablab/spades>`_ (License: `SPAdes team <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
 
 
+Sample datasets
+---------------
+- Processed Metatranscriptome of soil microbial communities from the East River watershed near Crested Butte, Colorado, United States - ER_RNA_119 (`SRR11678315 <https://www.ncbi.nlm.nih.gov/sra/SRX8239222>`_) with `metadata available in the NMDC Data Portal <https://data.microbiomedata.org/details/study/nmdc:sty-11-dcqce727>`_. 
+  - The zipped raw fastq file is available `here <https://portal.nersc.gov/project/m3408//test_data/metaT/SRR11678315.fastq.gz>`_
+  - The zipped, qc'ed fastq file is available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/readsqc_output/SRR11678315-int-0.1_filtered.fastq.gz>`_
+  - The sample assembly outputs are available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/assembly_output/>`_
 
 Inputs
 ------
