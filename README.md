@@ -3,6 +3,7 @@
 ## Summary
 This workflow was developed by Brian Foster at JGI. Original repo can be found (here)[https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/tree/master/metatranscriptome]. This workflow uses BBTools and SPAdes to assemble QC'ed transcriptomic reads. 
 
+
 ## Running Workflow in Cromwell
 
 Description of the files:
@@ -14,9 +15,9 @@ Description of the files:
 
 ## The Docker image and Dockerfile can be found here
 
-[microbiomedata/bbtools:38.96](https://hub.docker.com/r/microbiomedata/bbtools)
-[bryce911/spades:3.15.2](https://hub.docker.com/r/bryce911/spades)
-[microbiomedata/workflowmeta:1.1.1](https://hub.docker.com/r/microbiomedata/workflowmeta)
+- [microbiomedata/bbtools:38.96](https://hub.docker.com/r/microbiomedata/bbtools)
+- [bryce911/spades:3.15.2](https://hub.docker.com/r/bryce911/spades)
+- [microbiomedata/workflowmeta:1.1.1](https://hub.docker.com/r/microbiomedata/workflowmeta)
 
 
 ## Input files
@@ -38,7 +39,7 @@ The inputs for this workflow are as follows:
 
 The output will have one directory named by prefix project name and a bunch of output files, including statistical numbers, status log, and run information. 
 
-The main read count table output is named by prefix.pairedMapped_sorted.bam. 
+The main read count table output is named by `prefix.pairedMapped_sorted.bam`. 
 
 ```
 |-- nmdc_xxxxxxx_bamfiles.tar
