@@ -9,7 +9,7 @@ MetaT Assembly Workflow (v0.0.2)
 Workflow Overview
 -----------------
 
-This workflow was developed by Brian Foster at JGI. Original repo can be found (here)[https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/tree/master/metatranscriptome]. This workflow uses SPAdes and `bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using `fungalrelease.sh`. 
+This workflow was developed by Brian Foster at JGI. Original repo can be found (here)[https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/tree/master/metatranscriptome]. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
 
 Workflow Availability
 ---------------------
@@ -77,7 +77,7 @@ An example input JSON file is shown below:
 Output
 ------
 
-In the outputs directory will be assembled contigs and scaffolds in fasta format from SPAdes. From `bbmap` will be mapped BAM and SAM files, including coverage, index, statistics, and a `.tar` collection. The log files, run information, and data statistics will also be included. 
+In the outputs directory will be assembled contigs and scaffolds in fasta format from SPAdes. From :code:`bbmap` will be mapped BAM and SAM files, including coverage, index, statistics, and a :code:`.tar` collection. The log files, run information, and data statistics will also be included. 
 
 
 An example output JSON file (scaffold_stats.json) is shown below:
