@@ -39,7 +39,7 @@ Hardware Requirements
 Workflow Dependencies
 ---------------------
 
-Third party software (This is included in the Docker image.)  
+Third party software (This is included in the Docker images.)  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - `BBTools v38.96 <https://jgi.doe.gov/data-and-tools/bbtools/>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
@@ -58,11 +58,11 @@ Inputs
 
 A JSON file containing the following information: 
 
-1.	the path to the cleaned fastq file 
-2.  input_interleaved (boolean)
-3.  output file prefix
-4.	(optional) parameters for memory 
-5.	(optional) number of threads requested
+#.	the path to the cleaned fastq file 
+#.  input_interleaved (boolean)
+#.  output file prefix
+#.	(optional) parameters for memory 
+#.	(optional) number of threads requested
 
 An example input JSON file is shown below:
 
