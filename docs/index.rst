@@ -3,13 +3,13 @@ MetaT Assembly Workflow (v0.0.2)
 
 .. image:: mt_assy_workflow2024.svg
    :align: center
-   :scale: 50%
+   :scale: 25%
 
 
 Workflow Overview
 -----------------
 
-This workflow was developed by Brian Foster at JGI. Original repo can be found (here)[https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/tree/master/metatranscriptome]. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
+This workflow was developed by Brian Foster at JGI. Original repo can be found `here <https://code.jgi.doe.gov/BFoster/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment>`_. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
 
 Workflow Availability
 ---------------------
@@ -17,6 +17,7 @@ Workflow Availability
 The workflow from GitHub uses all the listed docker images to run all third-party tools.
 The workflow is available in GitHub: https://github.com/microbiomedata/metaT_Assembly; the corresponding
 Docker images are available in DockerHub: 
+
 - `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 - `bryce911/spades:3.15.2 <https://hub.docker.com/r/bryce911/spades>`_
 - `microbiomedata/workflowmeta:1.1.1 <https://hub.docker.com/r/microbiomedata/workflowmeta>`_
@@ -49,9 +50,9 @@ Third party software (This is included in the Docker images.)
 Sample datasets
 ---------------
 - Processed Metatranscriptome of soil microbial communities from the East River watershed near Crested Butte, Colorado, United States - ER_RNA_119 (`SRR11678315 <https://www.ncbi.nlm.nih.gov/sra/SRX8239222>`_) with `metadata available in the NMDC Data Portal <https://data.microbiomedata.org/details/study/nmdc:sty-11-dcqce727>`_. 
-  - The zipped raw fastq file is available `here <https://portal.nersc.gov/project/m3408//test_data/metaT/SRR11678315.fastq.gz>`_
-  - The zipped, qc'ed fastq file is available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/readsqc_output/SRR11678315-int-0.1_filtered.fastq.gz>`_
-  - The sample assembly outputs are available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/assembly_output/>`_
+   - The zipped raw fastq file is available `here <https://portal.nersc.gov/project/m3408//test_data/metaT/SRR11678315.fastq.gz>`_
+   - The zipped, qc'ed fastq file is available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/readsqc_output/SRR11678315-int-0.1_filtered.fastq.gz>`_
+   - The sample assembly outputs are available `here <https://portal.nersc.gov/cfs/m3408/test_data/metaT/SRR11678315/assembly_output/>`_
 
 Inputs
 ------

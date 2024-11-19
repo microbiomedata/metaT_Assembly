@@ -1,7 +1,7 @@
 # The Metatranscriptome Assembly Pipeline
 
 ## Summary
-This workflow was developed by Brian Foster at JGI. Original repo can be found (here)[https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/tree/master/metatranscriptome]. This workflow uses BBTools and SPAdes to assemble QC'ed transcriptomic reads. 
+This workflow was developed by Brian Foster at JGI. Original repo can be found [here](https://code.jgi.doe.gov/BFoster/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment). This workflow uses BBTools and SPAdes to assemble QC'ed transcriptomic reads. 
 
 
 ## Running Workflow in Cromwell
