@@ -44,7 +44,7 @@ Third party software (This is included in the Docker images.)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - `BBTools v38.96 <https://jgi.doe.gov/data-and-tools/bbtools/>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
-- `SPAdes v3.15.4 <https://github.com/ablab/spades>`_ (License: `GNU GPL v3 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
+- `SPAdes v3.15.4 <https://github.com/ablab/spades>`_ (License: `GNU GPL v2 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
 
 
 Sample datasets
