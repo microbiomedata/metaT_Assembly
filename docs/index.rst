@@ -3,7 +3,6 @@ MetaT Assembly Workflow (v0.0.2)
 
 .. image:: mt_assy_workflow2024.svg
    :align: center
-   :scale: 25%
 
 
 Workflow Overview
