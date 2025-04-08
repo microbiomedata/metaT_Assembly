@@ -43,23 +43,40 @@ workflow metatranscriptome_assy {
         prefix = prefix,
         container = bbtools_container
     }
+
+    if (length(input_files) == 1) {
     call mapping.mappingtask as single_run {
-        input:
+      input:
         reads = input_files[0],
         reference = rename_contig.outcontigs,
         container = bbtools_container
     }
-    call mapping.finalize_bams as finalize_bams{
+    }
+    if (length(input_files) > 1) {
+        scatter (input_file in input_files) {
+        call mapping.mappingtask as multi_run {
             input:
-            insing = single_run.outbamfile,
+            reads = input_file,
+            reference = rename_contig.outcontigs,
             container = bbtools_container
+        }
+        }
     }
 
     call mapping.tar_bams as tar_bams {
             input:
             insing = single_run.outbamfile,
+            inmult = multi_run.outbamfile,
             container = bbtools_container
     }
+
+    call mapping.finalize_bams as finalize_bams{
+            input:
+            insing = single_run.outbamfile,
+            inmult = multi_run.outbamfile,
+            container = bbtools_container
+    }
+
 
     call finish_asm {
         input:
