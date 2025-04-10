@@ -130,7 +130,7 @@ task stage {
         then
             cat ~{sep=" "  input_files} > ~{reads_input}
         else
-            ln -s ~{input_files[0]} ./~{reads_input}
+            ln -s ~{input_files[0]} ./~{reads_input} || ln ~{input_files[0]} ./~{reads_input}
         fi
     >>>
     output {
