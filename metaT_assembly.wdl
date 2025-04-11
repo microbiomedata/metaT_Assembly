@@ -15,12 +15,6 @@ workflow metatranscriptome_assy {
         Int assy_mem = 120 # half of defaults
     }
 
-    # call stage {
-    #     input:
-    #     input_files = input_files,
-    #     container = workflowmeta_container
-    # }
-
     call http_rnaspades.readstats_raw {
         input:
         reads_files = input_files, 
@@ -108,53 +102,13 @@ workflow metatranscriptome_assy {
         File final_cov = finish_asm.final_cov
         File asmstats = finish_asm.final_asmstats
         File info_file = make_info_file.assyinfo
-        
     }
-
-        meta {
-        author: "Migun Shakya, B-GEN, LANL"
-        email: "migun@lanl.gov"
-        version: "0.0.1"
+    
+    parameter_meta {
+    proj_id: "NMDC project ID"
+    input_files: "Cleaned fastq.gz file(s) in an array"
     }
 }
-# task stage {
-#     input{
-#         Array[String] input_files
-#         String container
-#         String single = if (length(input_files) == 1) then "1" else "0"
-#         String reads_input = "reads.input.fastq.gz"
-#     }
-#    command <<<
-
-#     set -oeu pipefail
-#     if [ $( echo ~{input_file}|egrep -c "https*:") -gt 0 ] ; then
-#         wget ~{input_file} -O ~{target}
-#     else
-#         ln ~{input_file} ~{target} || ln -s ~{input_file} ~{target}
-#     fi
-#     # Capture the start time
-#     date --iso-8601=seconds > start.txt
-
-#     if [ ~{single} == 0 ]
-#     then
-#         cat ~{sep=" "  input_files} > ~{reads_input}
-#     else
-#         ln -s ~{input_files[0]} ./~{reads_input} || ln ~{input_files[0]} ./~{reads_input}
-#     fi
-#    >>>
-
-#    output{
-#         Array[File] reads_files = [reads_input]
-#       File reads_fastq = "~{target}"
-#       String start = read_string("start.txt")
-#    }
-#    runtime {
-#         memory: "1G"
-#         cpu:  1
-#         maxRetries: 1
-#         docker: container
-#    }
-# }
 
 
 task rename_contig{
@@ -227,7 +181,6 @@ task finish_asm {
 
         sed -i 's/l_gt50k/l_gt50K/g' ~{asmstats}
         cat ~{asmstats} | jq 'del(.filename)' > scaffold_stats.json
-
     >>>
 
     output{
@@ -240,8 +193,7 @@ task finish_asm {
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
         File final_bamidx = "~{prefix}_pairedMapped_sorted.bam.bai"
         File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov"
-        File final_asmstats = "scaffold_stats.json"
-        
+        File final_asmstats = "scaffold_stats.json"  
     }
     runtime{
         memory: "10G"
@@ -262,23 +214,22 @@ task make_info_file{
     }
 
     command <<<
-    set -oeu pipefail
-    bbtools_version=`grep Version ~{bbtools_info}`
+        set -oeu pipefail
+        bbtools_version=`grep Version ~{bbtools_info}`
 
-    echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}_metaT_assy.info
-    echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}_metaT_assy.info
-    echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}_metaT_assy.info
-    echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}_metaT_assy.info
-    echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
-    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
+        echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}_metaT_assy.info
+        echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}_metaT_assy.info
+        echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}_metaT_assy.info
+        echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}_metaT_assy.info
+        echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
+        echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
 
-    echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
-    echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
-    echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
+        echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
+        echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
+        echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
 
-    echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
-    echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}_metaT_assy.info
-
+        echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
+        echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}_metaT_assy.info
     >>>
 
     output{
