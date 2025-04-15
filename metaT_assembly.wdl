@@ -35,6 +35,7 @@ workflow metatranscriptome_assy {
     }
     call rename_contig {
         input:
+        reads = input_files[0],
         contigs = create_agp.outcontigs,
         scaffolds = create_agp.outscaffolds,
         agp = create_agp.outagp,
@@ -46,7 +47,7 @@ workflow metatranscriptome_assy {
 
     call mapping.mappingtask as single_run {
       input:
-        reads = input_files[0],
+        reads = rename_contig.read_files,
         reference = rename_contig.outcontigs,
         container = bbtools_container
     }
@@ -113,6 +114,8 @@ workflow metatranscriptome_assy {
 
 task rename_contig{
     input{
+        File reads
+        String lnreads = "~{prefix}.fastq.gz"
         File contigs
         File scaffolds
         File agp
@@ -133,9 +136,11 @@ task rename_contig{
         fi
 
         bbstats.sh format=8 in=~{scaffolds} out=stats.json
+        ln ~{reads} ~{lnreads} || ln -s ~{reads} ~{lnreads} 
     >>>
 
     output{
+        File read_files = lnreads
         File outcontigs = "~{prefix}_contigs.fna"
         File outscaffolds = "~{prefix}_scaffolds.fna"
         File outagp = "~{prefix}.agp"
