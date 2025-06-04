@@ -1,7 +1,7 @@
 version 1.0
 
-import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc_runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/mapping.wdl?ref=heads" as mapping # replace with correct URLs once branch nmdc_runtimes created on https://code.jgi.doe.gov/BFoster/jgi_meta/
-import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc_runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/metatranscriptome_asm_rnaspades.wdl?ref=heads" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc-runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/mapping.wdl?ref_type=1e40a596e43ee3d9577d45c58f5a233c8d5ce54f" as mapping 
+import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc-runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/metatranscriptome_asm_rnaspades.wdl?ref_type=743d0869d72c5be677e66696260fd170577f4c82" as http_rnaspades
 
 workflow metatranscriptome_assy {
     input{
