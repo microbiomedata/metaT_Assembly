@@ -1,93 +1,79 @@
 version 1.0
 
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
-import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=855279a58daccf298bca0372c034f29cf95792d7" as http_rnaspades
+import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc_runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/mapping.wdl?ref=heads" as mapping # replace with correct URLs once branch nmdc_runtimes created on https://code.jgi.doe.gov/BFoster/jgi_meta/
+import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc_runtimes/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment/metatranscriptome_asm_rnaspades.wdl?ref=heads" as http_rnaspades
 
 workflow metatranscriptome_assy {
     input{
-        Array[String] input_files # fastq.gz
+        Array[String] input_files
         String proj_id
         String prefix=sub(proj_id, ":", "_")
-        String bbtools_container = "microbiomedata/bbtools:38.96"
-        String spades_container_prod = "bryce911/spades:3.15.2"
+        String bbtools_container = "bryce911/bbtools:39.10"
+        String bbtools_map_container = "bryce911/bbtools:38.86"
+        String spades_container = "staphb/spades:4.0.0"
         String workflowmeta_container="microbiomedata/workflowmeta:1.1.1"
-        Int assy_thr = 8 # half of defaults
-        Int assy_mem = 120 # half of defaults
+        Int asm_thr = 16 # half of defaults
+        Int asm_mem = 200
+        Int map_thr = 18
+        Int map_mem = 120
+        Boolean dotar_bams = true
+        Boolean dofinalize_bams = true
     }
 
-    call http_rnaspades.readstats_raw {
-        input:
-        reads_files = input_files, 
-        container = bbtools_container
+    call http_rnaspades.metatranscriptome_asm as mtasm{
+        input: 
+            input_files = input_files,
+            bbtools_container = bbtools_container,
+            spades_container_prod = spades_container,
+            asm_thr = asm_thr,
+            asm_mem = asm_mem
     }
 
-    call http_rnaspades.assy {
-        input:
-        reads_files = input_files,
-        container = spades_container_prod,
-        threads = assy_thr,
-        memory = assy_mem
-    }
-    call http_rnaspades.create_agp {
-        input:
-        contigs_in = assy.out,
-        container = bbtools_container
-    }
     call rename_contig {
         input:
-        reads = input_files[0],
-        contigs = create_agp.outcontigs,
-        scaffolds = create_agp.outscaffolds,
-        agp = create_agp.outagp,
-        legend = create_agp.outlegend,
+        contigs = mtasm.final_contigs,
+        scaffolds = mtasm.final_scaffolds,
+        agp = mtasm.final_agp,
+        legend = mtasm.final_legend,
         proj_id = proj_id,
         prefix = prefix,
         container = bbtools_container
     }
 
-    call mapping.mappingtask as single_run {
-      input:
-        reads = rename_contig.read_files,
-        reference = rename_contig.outcontigs,
-        container = bbtools_container
+    call mapping.mapping as map {
+        input:
+            input_files = input_files,
+            input_reference = rename_contig.outcontigs,
+            dotar_bams = dotar_bams,
+            dofinalize_bams = dofinalize_bams,
+            bbtools_container = bbtools_map_container,
+            map_thr = map_thr,
+            map_mem = map_mem
     }
-
-    call mapping.tar_bams as tar_bams {
-            input:
-            insing = single_run.outbamfile,
-            container = bbtools_container
-    }
-
-    call mapping.finalize_bams as finalize_bams{
-            input:
-            insing = single_run.outbamfile,
-            container = bbtools_container
-    }
-
 
     call finish_asm {
         input:
         prefix = prefix,
-        tar_bam = tar_bams.outtarbam,
+        readlen = mtasm.final_readlen,
         contigs = rename_contig.outcontigs,
         scaffolds = rename_contig.outscaffolds,
-        log = assy.log,
-        readlen = readstats_raw.outreadlen,
-        sam = finalize_bams.outsam,
-        bam = finalize_bams.outbam,
-        bamidx = finalize_bams.outbamidx,
-        cov = finalize_bams.outcov,
         asmstats = rename_contig.asmstats,
+        log = mtasm.final_log,
+        sam = select_first([map.outsam]),
+        bam = select_first([map.outbam]),
+        bamidx = select_first([map.outbamidx]),
+        cov = select_first([map.outcov]),
+        tar_bam = select_first([map.outtarbam]),
         container = workflowmeta_container
     }
 
     call make_info_file {
         input:
         bbtools_info = rename_contig.outlog,
-        spades_info = assy.log,
+        spades_info = mtasm.final_log,
         prefix = prefix,
         bbtools_container = bbtools_container,
-        spades_container = spades_container_prod
+        spades_container = spades_container
     }
 
 
@@ -103,19 +89,12 @@ workflow metatranscriptome_assy {
         File final_cov = finish_asm.final_cov
         File asmstats = finish_asm.final_asmstats
         File info_file = make_info_file.assyinfo
-    }
-    
-    parameter_meta {
-    proj_id: "NMDC project ID"
-    input_files: "Cleaned fastq.gz file(s) in an array"
+        
     }
 }
 
-
 task rename_contig{
     input{
-        File reads
-        String lnreads = "~{prefix}.fastq.gz"
         File contigs
         File scaffolds
         File agp
@@ -136,11 +115,9 @@ task rename_contig{
         fi
 
         bbstats.sh format=8 in=~{scaffolds} out=stats.json
-        ln ~{reads} ~{lnreads} || ln -s ~{reads} ~{lnreads} 
     >>>
 
     output{
-        File read_files = lnreads
         File outcontigs = "~{prefix}_contigs.fna"
         File outscaffolds = "~{prefix}_scaffolds.fna"
         File outagp = "~{prefix}.agp"
@@ -150,9 +127,10 @@ task rename_contig{
     }
     runtime {
         memory: "10G"
-        cpu:  4
+        cpu:  2
         maxRetries: 1
         docker: container
+        runtime_minutes: 30
     }
 }
 
@@ -186,6 +164,7 @@ task finish_asm {
 
         sed -i 's/l_gt50k/l_gt50K/g' ~{asmstats}
         cat ~{asmstats} | jq 'del(.filename)' > scaffold_stats.json
+
     >>>
 
     output{
@@ -198,13 +177,15 @@ task finish_asm {
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
         File final_bamidx = "~{prefix}_pairedMapped_sorted.bam.bai"
         File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov"
-        File final_asmstats = "scaffold_stats.json"  
+        File final_asmstats = "scaffold_stats.json"
+        
     }
     runtime{
-        memory: "10G"
-        cpu:  4
+        memory: "2G"
+        cpu:  1
         maxRetries: 1
         docker: container
+        runtime_minutes: 30
     }
 }
 
@@ -219,22 +200,23 @@ task make_info_file{
     }
 
     command <<<
-        set -oeu pipefail
-        bbtools_version=`grep Version ~{bbtools_info}`
+    set -oeu pipefail
+    bbtools_version=`grep Version ~{bbtools_info}`
 
-        echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}_metaT_assy.info
-        echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}_metaT_assy.info
-        echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}_metaT_assy.info
-        echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}_metaT_assy.info
-        echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
-        echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
+    echo -e "Metatranscriptomic Assembly Workflow - Info File" > ~{prefix}_metaT_assy.info
+    echo -e "This workflow assembles metatranscriptomic reads using a workflow developed by Brian Foster at JGI." >> ~{prefix}_metaT_assy.info
+    echo -e "The reads are assembled using SPAdes(1):" >> ~{prefix}_metaT_assy.info
+    echo -e "`head -6 ~{spades_info} | tail -4`" >> ~{prefix}_metaT_assy.info
+    echo -e "An AGP file is created using fungalrelease.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
+    echo -e "Assembled reads are mapped using bbmap.sh (BBTools(2)${bbtools_version})." >> ~{prefix}_metaT_assy.info
 
-        echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
-        echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
-        echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
+    echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
+    echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
+    echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
 
-        echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
-        echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}_metaT_assy.info
+    echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
+    echo -e "(2) B. Bushnell: BBTools software package, http://bbtools.jgi.doe.gov/" >> ~{prefix}_metaT_assy.info
+
     >>>
 
     output{
@@ -242,8 +224,9 @@ task make_info_file{
     }
     runtime{
         memory: "2G"
-        cpu:  4
+        cpu:  1
         maxRetries: 1
         docker: bbtools_container
+        runtime_minutes: 30
     }
 }
