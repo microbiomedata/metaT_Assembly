@@ -3,6 +3,14 @@ version 1.0
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/common/mapping.wdl?ref=0e589f4dfbb4285089c4c99b422e2eec79185ba6" as mapping
 import "https://code.jgi.doe.gov/BFoster/jgi_meta_wdl/-/raw/main1.0/metatranscriptome/metatranscriptome_assy_rnaspades.wdl?ref=855279a58daccf298bca0372c034f29cf95792d7" as http_rnaspades
 
+struct Resources {
+    Float kmers
+    Int predicted
+    Int request
+    Int cpu
+    Int runtime_minutes
+}
+
 workflow metatranscriptome_assy {
     input{
         Array[String] input_files # fastq.gz
@@ -21,12 +29,24 @@ workflow metatranscriptome_assy {
         container = bbtools_container
     }
 
+    call predict_kmers {
+        input: 
+        input_files = input_files, 
+        container = bbtools_container
+    }
+
+    call predict_memory {
+        input:
+            kmer_count = predict_kmers.floatkmer,
+            container = bbtools_container
+    }
+
     call http_rnaspades.assy {
         input:
         reads_files = input_files,
         container = spades_container_prod,
-        threads = assy_thr,
-        memory = assy_mem
+        threads=predict_memory.resource.cpu, 
+        memory=predict_memory.resource.request
     }
     call http_rnaspades.create_agp {
         input:
@@ -245,5 +265,85 @@ task make_info_file{
         cpu:  4
         maxRetries: 1
         docker: bbtools_container
+    }
+}
+
+task predict_memory {
+    input {
+        Float  kmer_count
+        String container
+        String json_out = "outfile.json"
+    }
+
+    command <<<
+python <<CODE
+import json
+import math
+kmers = ~{kmer_count}
+predicted_mem =  (kmers * 1.416e-08 + 8.676e-01) * 1.1
+predicted_time = (kmers * 2.153e-09 - 6.437e-01) * 1.5
+rounded_time = int(math.ceil(predicted_time / 10.0) * 10) * 60
+rounded_time = 10 if rounded_time <= 1 else rounded_time
+(mem, cpu)  = next(((m, c) for p, m, c in [(120, 110, 16), (250, 240, 32), (500, 490, 32)] if predicted_mem < p), (490, 32))
+with open("~{json_out}", "w") as f:
+    f.write(json.dumps({"kmers": float(round(kmers)), "predicted": int(round(predicted_mem)), "request": int(mem), "cpu": int(cpu), "runtime_minutes": int(rounded_time)}))
+CODE
+>>>
+    runtime {
+        docker: container
+        memory: "2 GiB"
+        cpu: 1
+    }
+    output {
+        Resources resource = read_json(json_out)
+    }
+}
+
+task predict_kmers {
+    input{
+        Array[File] input_files
+        String container
+        String? memory
+        String filename_kmerfile = "unique31mer.txt"
+        String filename_counts   = "counts.metadata.json"
+    }
+    
+    command<<<
+    set -euo pipefail
+
+    if file --mime -b ~{input_files[0]} | grep -q gzip; then
+        cat ~{sep=" " input_files} > infile.fastq.gz
+        bbcms_input=infile.fastq.gz
+    else
+        cat ~{sep=" " input_files} > infile.fastq
+        bbcms_input=infile.fastq
+    fi
+
+    bbcms_outfile="tmp.bbcms_outfile.fastq.gz"
+    bbcms.sh \
+    ~{if (defined(memory)) then "-Xmx" + memory else "-Xmx105G" } \
+    metadatafile=~{filename_counts} \
+    mincount=2 \
+    highcountfraction=0.6 \
+    in="$bbcms_input" \
+    out="$bbcms_outfile" \
+    1>/dev/null 2>stderr.log \
+    && grep Unique stderr.log \
+    | rev |  cut -f 1 | rev  \
+    > ~{filename_kmerfile}
+
+    rm -f "$bbcms_input" "$bbcms_outfile" stderr.log
+
+    >>>
+
+    output {
+    File  outkmer = filename_kmerfile
+    Float floatkmer = read_float(filename_kmerfile)
+    }
+
+    runtime {
+        docker: container
+        memory: "120 GiB"
+        cpu:  16
     }
 }
