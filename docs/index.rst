@@ -27,7 +27,7 @@ Docker images are available in DockerHub:
 
 - `bryce911/bbtools:38.86 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 - `bryce911/bbtools:39.10 <https://hub.docker.com/r/microbiomedata/bbtools>`_
-- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>
+- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 - `bryce911/spades:4.0.0 <https://hub.docker.com/r/bryce911/spades>`_
 - `microbiomedata/workflowmeta:1.1.1 <https://hub.docker.com/r/microbiomedata/workflowmeta>`_
 
