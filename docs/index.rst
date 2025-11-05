@@ -6,7 +6,7 @@
          site the file is incorporated into. You can learn more about the `github_url` field at:
          https://sphinx-rtd-theme.readthedocs.io/en/stable/configuring.html#confval-github_url
 
-MetaT Assembly Workflow (v0.0.5)
+Metatranscriptome Assembly Workflow
 =============================
 
 .. image:: mt_assy_workflow2024.svg
@@ -16,7 +16,7 @@ MetaT Assembly Workflow (v0.0.5)
 Workflow Overview
 -----------------
 
-This workflow was developed by Brian Foster at JGI. Original repo can be found `here <https://code.jgi.doe.gov/BFoster/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment?ref_type=heads>`_. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
+This workflow was developed by Brian Foster at JGI. Original repo can be found `here <https://code.jgi.doe.gov/gaa/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment>`_. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
 
 Workflow Availability
 ---------------------
@@ -27,7 +27,8 @@ Docker images are available in DockerHub:
 
 - `bryce911/bbtools:38.86 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 - `bryce911/bbtools:39.10 <https://hub.docker.com/r/microbiomedata/bbtools>`_
-- `bryce911/spades:3.15.2 <https://hub.docker.com/r/bryce911/spades>`_
+- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>
+- `bryce911/spades:4.0.0 <https://hub.docker.com/r/bryce911/spades>`_
 - `microbiomedata/workflowmeta:1.1.1 <https://hub.docker.com/r/microbiomedata/workflowmeta>`_
 
 
@@ -158,8 +159,8 @@ Below is an example of all the output directory files with descriptions to the r
 Version History
 ---------------
 
+- 0.0.5 (release date 11/05/2025)
 - 0.0.2 (release date 07/25/2024)
-- 0.0.5 (release date 06/_/2025)
 
 
 Point of contact
@@ -167,4 +168,4 @@ Point of contact
 
 - Original author: Brian Foster <bfoster@lbl.gov>
 
-- Package maintainers: Chienchi Lo <chienchi@lanl.gov>, Kaitlyn Li <kli@lanl.gov>
+- Package maintainers: Chienchi Lo <chienchi@lanl.gov>, Kaitlyn Li <kli@lanl.gov>, Valerie Li <vli@lanl.gov>
