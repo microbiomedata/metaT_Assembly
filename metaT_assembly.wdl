@@ -5,24 +5,21 @@ import "https://code.jgi.doe.gov/BFoster/jgi_meta/-/raw/nmdc-runtimes/jgi_meta_w
 
 struct Resources {
     Float kmers
-    Int predicted
-    Int request
-    Int cpu
-    Int runtime_minutes
+    Int   predicted
+    Int   request
+    Int   cpu
+    Int   runtime_minutes
 }
 
 workflow metatranscriptome_assy {
     input{
         Array[String] input_files
         String proj_id
-        String prefix=sub(proj_id, ":", "_")
+        String prefix = sub(proj_id, ":", "_")
         String bbtools_container = "bryce911/bbtools:39.10"
-        String bbtools_map_container = "bryce911/bbtools:38.86"
         String spades_container = "staphb/spades:4.0.0"
-        String workflowmeta_container="microbiomedata/workflowmeta:1.1.1"
+        String workflowmeta_container = "microbiomedata/workflowmeta:1.1.1"
         String bbtools_predict_container = "microbiomedata/bbtools:38.96"
-        # Int asm_thr = 16 # half of defaults
-        # Int asm_mem = 200
         Int map_thr = 18
         Int map_mem = 120
         Boolean dotar_bams = true
@@ -67,7 +64,6 @@ workflow metatranscriptome_assy {
             input_reference = rename_contig.outcontigs,
             dotar_bams = dotar_bams,
             dofinalize_bams = dofinalize_bams,
-            bbtools_container = bbtools_map_container,
             map_thr = map_thr,
             map_mem = map_mem
     }
@@ -115,10 +111,9 @@ workflow metatranscriptome_assy {
 }
 
 task predict_kmers {
-    input{
+    input {
         Array[File] input_files
         String container
-        String? memory
         String filename_kmerfile = "unique31mer.txt"
         String filename_counts   = "counts.metadata.json"
     }
@@ -136,16 +131,16 @@ task predict_kmers {
 
         bbcms_outfile="tmp.bbcms_outfile.fastq.gz"
         bbcms.sh \
-        ~{if (defined(memory)) then "-Xmx" + memory else "-Xmx105G" } \
-        metadatafile=~{filename_counts} \
-        mincount=2 \
-        highcountfraction=0.6 \
-        in="$bbcms_input" \
-        out="$bbcms_outfile" \
-        1>/dev/null 2>stderr.log \
+            -Xmx105G \
+            metadatafile=~{filename_counts} \
+            mincount=2 \
+            highcountfraction=0.6 \
+            in="$bbcms_input" \
+            out="$bbcms_outfile" \
+            1>/dev/null 2>stderr.log \
         && grep Unique stderr.log \
-        | rev |  cut -f 1 | rev  \
-        > ~{filename_kmerfile}
+            | rev |  cut -f 1 | rev  \
+            > ~{filename_kmerfile}
 
         echo "$bbcms_input" > bbcms_input_path.txt
         rm -f "$bbcms_outfile" stderr.log
@@ -193,18 +188,20 @@ task predict_memory {
             f.write(json.dumps({"kmers": float(round(kmers)), "predicted": int(round(predicted_mem)), "request": int(mem), "cpu": int(cpu), "runtime_minutes": int(rounded_time)}))
         CODE
     >>>
+
     runtime {
         docker: container
         memory: "2 GiB"
         cpu: 1
     }
+
     output {
         Resources resource = read_json(json_out)
     }
 }
 
-task rename_contig{
-    input{
+task rename_contig {
+    input {
         File contigs
         File scaffolds
         File agp
@@ -213,6 +210,7 @@ task rename_contig{
         String prefix
         String container
     }
+
     command <<<
         set -euo pipefail
         grep "Version" /bbmap/README.md | sed 's/#//' 
@@ -227,7 +225,7 @@ task rename_contig{
         bbstats.sh format=8 in=~{scaffolds} out=stats.json
     >>>
 
-    output{
+    output {
         File outcontigs = "~{prefix}_contigs.fna"
         File outscaffolds = "~{prefix}_scaffolds.fna"
         File outagp = "~{prefix}.agp"
@@ -235,6 +233,7 @@ task rename_contig{
         File asmstats = "stats.json"
         File outlog = stdout()
     }
+
     runtime {
         memory: "10G"
         cpu:  2
@@ -245,7 +244,7 @@ task rename_contig{
 }
 
 task finish_asm {
-    input{
+    input {
         String prefix
         File tar_bam
         File contigs
@@ -277,7 +276,7 @@ task finish_asm {
 
     >>>
 
-    output{
+    output {
         File final_tar_bam = "~{prefix}_bamfiles.tar"
         File final_contigs = "~{prefix}_contigs.fna"
         File final_scaffolds = "~{prefix}_scaffolds.fna"
@@ -287,10 +286,10 @@ task finish_asm {
         File final_bam = "~{prefix}_pairedMapped_sorted.bam"
         File final_bamidx = "~{prefix}_pairedMapped_sorted.bam.bai"
         File final_cov = "~{prefix}_pairedMapped_sorted.bam.cov"
-        File final_asmstats = "scaffold_stats.json"
-        
+        File final_asmstats = "scaffold_stats.json"   
     }
-    runtime{
+
+    runtime {
         memory: "2G"
         cpu:  1
         maxRetries: 1
@@ -300,13 +299,13 @@ task finish_asm {
 }
 
 
-task make_info_file{
-    input{
-    File bbtools_info
-    File spades_info
-    String prefix
-    String bbtools_container
-    String spades_container
+task make_info_file {
+    input {
+        File bbtools_info
+        File spades_info
+        String prefix
+        String bbtools_container
+        String spades_container
     }
 
     command <<<
@@ -329,10 +328,11 @@ task make_info_file{
 
     >>>
 
-    output{
+    output {
         File assyinfo = "~{prefix}_metaT_assy.info"
     }
-    runtime{
+
+    runtime {
         memory: "2G"
         cpu:  1
         maxRetries: 1
