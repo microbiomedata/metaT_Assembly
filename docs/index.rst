@@ -25,11 +25,10 @@ The workflow from GitHub uses all the listed docker images to run all third-part
 The workflow is available in GitHub: https://github.com/microbiomedata/metaT_Assembly; the corresponding
 Docker images are available in DockerHub: 
 
-- `bryce911/bbtools:38.86 <https://hub.docker.com/r/microbiomedata/bbtools>`_
-- `bryce911/bbtools:39.10 <https://hub.docker.com/r/microbiomedata/bbtools>`_
-- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
+- `bryce911/bbtools:39.10 <https://github.com/bbushnell/BBTools>`_
 - `bryce911/spades:4.0.0 <https://hub.docker.com/r/bryce911/spades>`_
 - `microbiomedata/workflowmeta:1.1.1 <https://hub.docker.com/r/microbiomedata/workflowmeta>`_
+- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 
 
 Requirements for Execution 
@@ -52,8 +51,8 @@ Workflow Dependencies
 Third party software (This is included in the Docker images.)  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- `BBTools v38.96 <https://jgi.doe.gov/data-and-tools/bbtools/>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
-- `SPAdes v3.15.4 <https://github.com/ablab/spades>`_ (License: `GNU GPL v2 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
+- `BBTools v39.10 <https://jgi.doe.gov/data-and-tools/bbtools/>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
+- `SPAdes v4.0.0 <https://github.com/ablab/spades>`_ (License: `GNU GPL v2 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
 
 
 Sample datasets
@@ -159,7 +158,7 @@ Below is an example of all the output directory files with descriptions to the r
 Version History
 ---------------
 
-- 0.0.5 (release date 11/05/2025)
+- 0.0.5 (release date 11/13/2025)
 - 0.0.2 (release date 07/25/2024)
 
 
