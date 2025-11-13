@@ -90,7 +90,7 @@ workflow metatranscriptome_assy {
         spades_info = mtasm.final_log,
         prefix = prefix,
         bbtools_container = bbtools_container,
-        predict_container = bbtools_predict_container
+        predict_container = bbtools_predict_container,
         spades_container = spades_container
     }
 
