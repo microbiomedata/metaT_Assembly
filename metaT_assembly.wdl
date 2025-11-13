@@ -90,6 +90,7 @@ workflow metatranscriptome_assy {
         spades_info = mtasm.final_log,
         prefix = prefix,
         bbtools_container = bbtools_container,
+        predict_container = bbtools_predict_container
         spades_container = spades_container
     }
 
@@ -305,6 +306,7 @@ task make_info_file {
         File spades_info
         String prefix
         String bbtools_container
+        String predict_container
         String spades_container
     }
 
@@ -321,6 +323,7 @@ task make_info_file {
 
     echo -e "\nThe following are the Docker images used in this workflow:" >> ~{prefix}_metaT_assy.info
     echo -e "   ~{bbtools_container}" >> ~{prefix}_metaT_assy.info
+    echo -e "   ~{predict_container}" >> ~{prefix}_metaT_assy.info
     echo -e "   ~{spades_container}" >> ~{prefix}_metaT_assy.info
 
     echo -e "\n(1) Bankevich, A., Nurk, S., Antipov, D., Gurevich, A. A., Dvorkin, M., Kulikov, A. S., Lesin, V. M., Nikolenko, S. I., Pham, S., Prjibelski, A. D., Pyshkin, A. V., Sirotkin, A. V., Vyahhi, N., Tesler, G., Alekseyev, M. A., & Pevzner, P. A. (2012). Spades: A new genome assembly algorithm and its applications to single-cell sequencing. Journal of Computational Biology, 19(5), 455-477. https://doi.org/10.1089/cmb.2012.0021" >> ~{prefix}_metaT_assy.info
