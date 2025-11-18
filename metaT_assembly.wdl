@@ -158,6 +158,7 @@ task predict_kmers {
         docker: container
         memory: "120 GiB"
         cpu:  16
+        runtime_minutes: 30
     }
 }
 
@@ -194,6 +195,7 @@ task predict_memory {
         docker: container
         memory: "2 GiB"
         cpu: 1
+        runtime_minutes: 20
     }
 
     output {
