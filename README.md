@@ -16,8 +16,9 @@ Description of the files:
 ## The Docker image and Dockerfile can be found here
 
 - [microbiomedata/bbtools:38.96](https://hub.docker.com/r/microbiomedata/bbtools)
-- [bryce911/spades:3.15.2](https://hub.docker.com/r/bryce911/spades)
+- [bryce911/spades:4.0.0](https://hub.docker.com/r/bryce911/spades)
 - [microbiomedata/workflowmeta:1.1.1](https://hub.docker.com/r/microbiomedata/workflowmeta)
+- [bryce911/bbtools:39.10](https://hub.docker.com/r/bryce911/bbtools)
 
 
 ## Input files

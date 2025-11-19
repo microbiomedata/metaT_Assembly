@@ -6,7 +6,7 @@
          site the file is incorporated into. You can learn more about the `github_url` field at:
          https://sphinx-rtd-theme.readthedocs.io/en/stable/configuring.html#confval-github_url
 
-MetaT Assembly Workflow (v0.0.2)
+Metatranscriptome Assembly Workflow
 =============================
 
 .. image:: mt_assy_workflow2024.svg
@@ -16,7 +16,7 @@ MetaT Assembly Workflow (v0.0.2)
 Workflow Overview
 -----------------
 
-This workflow was developed by Brian Foster at JGI. Original repo can be found `here <https://code.jgi.doe.gov/BFoster/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment>`_. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
+This workflow was developed by Brian Foster at JGI. Original repo can be found `here <https://code.jgi.doe.gov/gaa/jgi_meta/-/tree/main/jgi_meta_wdl_sets/metatranscriptome_assembly_and_alignment>`_. This workflow uses SPAdes and :code:`bbmap` to assemble and map QC'ed transcriptomic reads, with an AGP file created using :code:`fungalrelease.sh`. 
 
 Workflow Availability
 ---------------------
@@ -25,9 +25,10 @@ The workflow from GitHub uses all the listed docker images to run all third-part
 The workflow is available in GitHub: https://github.com/microbiomedata/metaT_Assembly; the corresponding
 Docker images are available in DockerHub: 
 
-- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
-- `bryce911/spades:3.15.2 <https://hub.docker.com/r/bryce911/spades>`_
+- `bryce911/bbtools:39.10 <https://hub.docker.com/r/bryce911/bbtools>`_
+- `bryce911/spades:4.0.0 <https://hub.docker.com/r/bryce911/spades>`_
 - `microbiomedata/workflowmeta:1.1.1 <https://hub.docker.com/r/microbiomedata/workflowmeta>`_
+- `microbiomedata/bbtools:38.96 <https://hub.docker.com/r/microbiomedata/bbtools>`_
 
 
 Requirements for Execution 
@@ -50,8 +51,8 @@ Workflow Dependencies
 Third party software (This is included in the Docker images.)  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- `BBTools v38.96 <https://jgi.doe.gov/data-and-tools/bbtools/>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
-- `SPAdes v3.15.4 <https://github.com/ablab/spades>`_ (License: `GNU GPL v2 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
+- `BBTools v39.10 <https://github.com/bbushnell/BBTools>`_ (License: `BSD-3-Clause-LBNL <https://bitbucket.org/berkeleylab/jgi-bbtools/src/master/license.txt>`_)
+- `SPAdes v4.0.0 <https://github.com/ablab/spades>`_ (License: `GNU GPL v2 <https://github.com/ablab/spades?tab=License-1-ov-file#License-1-ov-file>`_)
 
 
 Sample datasets
@@ -157,6 +158,7 @@ Below is an example of all the output directory files with descriptions to the r
 Version History
 ---------------
 
+- 0.0.5 (release date 11/13/2025)
 - 0.0.2 (release date 07/25/2024)
 
 
@@ -165,4 +167,4 @@ Point of contact
 
 - Original author: Brian Foster <bfoster@lbl.gov>
 
-- Package maintainers: Chienchi Lo <chienchi@lanl.gov>
+- Package maintainers: Chienchi Lo <chienchi@lanl.gov>, Kaitlyn Li <kli@lanl.gov>, Valerie Li <vli@lanl.gov>
