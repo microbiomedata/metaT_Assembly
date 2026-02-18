@@ -167,4 +167,4 @@ Point of contact
 
 - Original author: Brian Foster <bfoster@lbl.gov>
 
-- Package maintainers: Chienchi Lo <chienchi@lanl.gov>, Kaitlyn Li <kli@lanl.gov>, Valerie Li <vli@lanl.gov>
+- Package maintainers: Samantha Obermiller samantha.obermiller@pnnl.gov
